@@ -1,0 +1,9 @@
+{
+  "name": "Petits Plats",
+  "devDependencies": {
+    "typescript": "^5.2.2"
+  },
+  "scripts": {
+    "build" : "tsc --watch"
+  }
+}
