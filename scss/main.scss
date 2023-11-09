@@ -1,0 +1,53 @@
+
+body {
+	margin: 0;
+}
+
+header {
+
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+
+	img {
+		position: absolute;
+		object-fit: cover;
+		width: 100%;
+		height: 600px;
+		z-index: -1;
+	}
+
+	h2 {
+		color: #FFD15B;
+		font-family: 'Anton';
+		font-size: 44px;
+		width: 50%;
+	}
+
+	.search-zone {
+		display: flex;
+		flex-direction: row;
+		justify-content: center;
+		align-items: center;
+		width: 75%;
+		position: relative;
+
+		input {
+			width: 100%;
+			border: none;
+			padding: 20px;
+			border-radius: 11px;
+		}
+	
+		#search-button {
+			position: absolute;
+			right: 1%;
+			padding: 20px 10px;
+			color: #FFFFFF;
+			background-color: #1B1B1B;
+			border-radius: 10px;
+		}
+	}
+}
