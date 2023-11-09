@@ -1,9 +1,10 @@
 {
   "name": "Petits Plats",
   "devDependencies": {
+    "amd-loader": "^0.0.8",
     "typescript": "^5.2.2"
   },
   "scripts": {
-    "build" : "tsc --watch"
+    "build": "tsc --watch"
   }
 }
