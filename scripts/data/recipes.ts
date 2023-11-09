@@ -1,5 +1,5 @@
 
-export const recipes = [
+export const recipesFile = [
     {
         "id": 1,
         "image": "Recette01.jpg",

@@ -1,8 +1,17 @@
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 define("data/recipes", ["require", "exports"], function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.recipes = void 0;
-    exports.recipes = [
+    exports.recipesFile = void 0;
+    exports.recipesFile = [
         {
             "id": 1,
             "image": "Recette01.jpg",
@@ -1773,11 +1782,6 @@ define("data/recipes", ["require", "exports"], function (require, exports) {
         }
     ];
 });
-define("index", ["require", "exports"], function (require, exports) {
-    "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
-    console.log('test');
-});
 define("entity/ingredient", ["require", "exports"], function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
@@ -1813,6 +1817,27 @@ define("entity/recipe", ["require", "exports", "entity/ingredient"], function (r
         }
     }
     exports.Recipe = Recipe;
+});
+define("index", ["require", "exports", "data/recipes", "entity/recipe"], function (require, exports, recipes_1, recipe_1) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    function parseRecipes(recipesFile) {
+        return __awaiter(this, void 0, void 0, function* () {
+            recipesFile.forEach(element => {
+                recipes.push(new recipe_1.Recipe(element.id, element.name, element.image, element.servings, element.time, element.description, element.appliance, element.ustensils, element.ingredients));
+            });
+            console.log(recipes);
+        });
+    }
+    function init() {
+        return __awaiter(this, void 0, void 0, function* () {
+            console.log('test');
+            parseRecipes(recipes_1.recipesFile);
+        });
+    }
+    let recipes = [];
+    init();
+    console.log('test');
 });
 define("templates/recipe_card", ["require", "exports"], function (require, exports) {
     "use strict";
