@@ -1792,6 +1792,25 @@ define("entity/ingredient", ["require", "exports"], function (require, exports) 
             this.quantity = quantity;
             this.unit = unit;
         }
+        /**
+         * getDOMPart
+         */
+        getDOMPart() {
+            let htmlDOMPart = /* html */ `
+		<div class="ingredient">
+		<h5>${this.ingredient}</h5>`;
+            if (this.quantity && this.unit) {
+                htmlDOMPart += `<span class="quantity">${this.quantity} ${this.unit}</span>`;
+            }
+            else if (this.quantity) {
+                htmlDOMPart += `<span class="quantity">${this.quantity}</span>`;
+            }
+            else if (this.unit) {
+                htmlDOMPart += `<span class="quantity">${this.unit}</span>`;
+            }
+            htmlDOMPart += `</div>`;
+            return htmlDOMPart;
+        }
     }
     exports.Ingredient = Ingredient;
 });
@@ -1814,6 +1833,29 @@ define("entity/recipe", ["require", "exports", "entity/ingredient"], function (r
             ingredients.forEach(element => {
                 this.ingredients.push(new ingredient_1.Ingredient(element.ingredient, element.quantity, element.unit));
             });
+        }
+        /**
+         * getDOMCard
+         */
+        getDOMCard() {
+            let cardDOM = /* html */ `
+	<div class="recipe-card">
+				<img src="./assets/recipes/${this.image}" alt="${this.name}">
+				<span class="time">${this.time} min</span>
+				<h3>${this.name}</h3>
+				<div class="recipe">
+					<div class="recipe-block">
+						<h4>Recette</h4>
+						<p>${this.description}</p>
+					</div>
+					<h4>Ingrédients</h4>
+					<div class="ingredients">`;
+            this.ingredients.forEach(ingredient => {
+                cardDOM += ingredient.getDOMPart();
+            });
+            cardDOM += `</div>
+				</div>
+			</div>`;
         }
     }
     exports.Recipe = Recipe;
@@ -1838,10 +1880,4 @@ define("index", ["require", "exports", "data/recipes", "entity/recipe"], functio
     let recipes = [];
     init();
     console.log('test');
-});
-define("templates/recipe_card", ["require", "exports"], function (require, exports) {
-    "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
-    function createRecipeCardDOM(recipe) {
-    }
 });

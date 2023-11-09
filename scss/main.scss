@@ -1,15 +1,14 @@
-
 body {
 	margin: 0;
 }
 
 header {
-
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
 	text-align: center;
+	height: 600px;
 
 	img {
 		position: absolute;
@@ -20,8 +19,8 @@ header {
 	}
 
 	h2 {
-		color: #FFD15B;
-		font-family: 'Anton';
+		color: #ffd15b;
+		font-family: "Anton";
 		font-size: 44px;
 		width: 50%;
 	}
@@ -40,14 +39,96 @@ header {
 			padding: 20px;
 			border-radius: 11px;
 		}
-	
+
 		#search-button {
 			position: absolute;
 			right: 1%;
 			padding: 20px 10px;
-			color: #FFFFFF;
-			background-color: #1B1B1B;
+			color: #ffffff;
+			background-color: #1b1b1b;
 			border-radius: 10px;
+		}
+	}
+}
+
+main {
+	width: 100%;
+	background-color: #ededed;
+
+	.recipes-cards {
+		.recipe-card {
+			width: 25%;
+			height: 700px;
+			display: flex;
+			flex-direction: column;
+			background-color: #fff;
+			border-radius: 21px;
+			font-family: "Manrope";
+			color: #1b1b1b;
+			position: relative;
+
+			.time {
+				position: absolute;
+				border-radius: 14px;
+				background: var(--Yellow, #ffd15b);
+				padding: 5px 10px;
+				top: 3%;
+				right: 5%;
+			}
+
+			img {
+				object-fit: cover;
+				width: 100%;
+				height: 33%;
+				border-top-right-radius: 21px;
+				border-top-left-radius: 21px;
+			}
+
+			h3 {
+				margin: 15px;
+				color: #000;
+				font-family: Anton;
+				font-size: 18px;
+				font-style: normal;
+				font-weight: 400;
+				line-height: normal;
+			}
+
+			.recipe {
+				margin: 15px;
+
+				h4 {
+					color: var(--Grey, #7a7a7a);
+					font-size: 12px;
+					font-style: normal;
+					font-weight: 700;
+					line-height: normal;
+					letter-spacing: 1.08px;
+					text-transform: uppercase;
+				}
+
+				.ingredients {
+					display: flex;
+					flex-direction: row;
+					flex-wrap: wrap;
+					justify-content: space-between;
+
+					.ingredient {
+						width: 45%;
+						margin: 5px;
+
+						h5 {
+							margin: 0;
+							font-size: 14px;
+						}
+
+						.quantity {
+							color: var(--Grey, #7a7a7a);
+							font-size: 14px;
+						}
+					}
+				}
+			}
 		}
 	}
 }
