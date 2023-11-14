@@ -3,6 +3,7 @@ import {recipesFile} from "./data/recipes";
 import { Recipe } from "./entity/recipe";
 
 async function parseRecipes(recipesFile: Array<any>){
+	console.log('test');
 
 	recipesFile.forEach(element => {
 		recipes.push(new Recipe(
@@ -17,18 +18,23 @@ async function parseRecipes(recipesFile: Array<any>){
 			element.ingredients
 		));
 	});
+}
 
-	console.log(recipes);
+async function displayRecipes(recipes: Recipe[]){
+	let recipesArea = document.querySelector('.recipes-cards');
+
+	if (recipesArea !== null){
+		recipes.forEach(recipe => {
+			recipesArea.innerHTML += recipe.getDOMCard();
+		});
+	}	
 }
 
 async function init(){
-	console.log('test');
-
 	parseRecipes(recipesFile);
+	displayRecipes(recipes);
 }
 
 let recipes: Array<Recipe> = [];
 
 init();
-
-console.log('test');

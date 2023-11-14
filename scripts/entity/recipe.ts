@@ -1,26 +1,16 @@
 import { Ingredient } from "./ingredient";
 
 export class Recipe {
-	id: number;
-	name: string;
-	image: string;
-	servings: number;
-	time: number;
-	description: string;
-	appliance: string;
-	ustensils: Array<string> = [];
-	ingredients: Array<Ingredient> = [];
-
 	constructor(
-		id: number,
-		name: string,
-		image: string,
-		servings: number,
-		time: number,
-		description: string,
-		appliance: string,
-		ustensils: Array<string>,
-		ingredients: Array<any>
+		public id: number,
+		public name: string,
+		public image: string,
+		public servings: number,
+		public time: number,
+		public description: string,
+		public appliance: string,
+		public ustensils: Array<string>,
+		public ingredients: Array<any>
 	) {
 		this.id = id;
 		this.name = name;
@@ -30,10 +20,11 @@ export class Recipe {
 		this.description = description;
 		this.appliance = appliance;
 		this.ustensils = ustensils;
+		this.ingredients = [];
 
 		ingredients.forEach(element => {
 			this.ingredients.push(new Ingredient(element.ingredient, element.quantity, element.unit));
-		})
+		});
 	}
 
 	/**
@@ -53,12 +44,14 @@ export class Recipe {
 					<h4>Ingrédients</h4>
 					<div class="ingredients">`;
 
-		this.ingredients.forEach(ingredient => {
+		this.ingredients.forEach((ingredient: Ingredient) => {
 			cardDOM += ingredient.getDOMPart();
 		});
 
 		cardDOM += `</div>
 				</div>
 			</div>`;
+
+		return cardDOM;
 	}
 }
