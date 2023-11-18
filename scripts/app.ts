@@ -157,9 +157,8 @@ async function parseRecipes(recipesFile: Array<any>) {
 async function displayRecipes(recipes: Recipe[]) {
 	let recipesArea = document.querySelector('.recipes-cards');
 
-	recipesArea.innerHTML = '';
-
-	if (recipesArea !== null) {
+	if (recipesArea !== null){
+		recipesArea.innerHTML = '';
 		recipes.forEach(recipe => {
 			recipesArea.innerHTML += recipe.getDOMCard();
 		});
@@ -171,6 +170,10 @@ async function init() {
 	displayRecipes(recipes);
 	createFiltersTriggers();
 
+
+	const researchField = document.querySelector('#search-bar');
+
+	researchField?.addEventListener('input', research);
 }
 
 let recipes: Array<Recipe> = [];

@@ -1981,8 +1981,8 @@
   }
   async function displayRecipes(recipes2) {
     let recipesArea = document.querySelector(".recipes-cards");
-    recipesArea.innerHTML = "";
     if (recipesArea !== null) {
+      recipesArea.innerHTML = "";
       recipes2.forEach((recipe) => {
         recipesArea.innerHTML += recipe.getDOMCard();
       });
@@ -1992,6 +1992,8 @@
     parseRecipes(recipesFile);
     displayRecipes(recipes);
     createFiltersTriggers();
+    const researchField = document.querySelector("#search-bar");
+    researchField?.addEventListener("input", research);
   }
   var recipes = [];
   var resultRecipes = [];
