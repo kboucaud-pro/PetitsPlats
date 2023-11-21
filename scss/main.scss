@@ -62,6 +62,36 @@ main {
 	width: 100%;
 	background-color: #ededed;
 
+	.filters {
+		display: flex;
+		flex-direction: row;
+		padding-top: 20px;
+		background-color: #ededed;
+		margin-left: 3%;
+
+		.filter-type {
+			padding: 17px;
+			color: #1B1B1B;
+			background-color: #FFFFFF;
+			border-radius: 11px;
+			display: flex;
+			justify-content: space-between;
+			width: 200px;
+		}
+
+		.hidden-element-list {
+			height: 0px;
+			overflow: hidden;
+		}
+
+		.showed-element-list {
+			height: 400px;
+			display: flex;
+			flex-direction: column;
+			overflow: scroll;
+		}
+	}
+
 	.recipes-cards {
 		display: flex;
 		flex-direction: row;

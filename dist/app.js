@@ -1861,6 +1861,16 @@
   };
 
   // scripts/app.ts
+  async function createFilters() {
+    const filterCategories = document.querySelectorAll(".filter-type");
+    filterCategories.forEach((element) => {
+      element.addEventListener("click", switchViewCategoryElement);
+    });
+  }
+  async function addToIngredientList(ingredients) {
+  }
+  async function switchViewCategoryElement() {
+  }
   async function parseRecipes(recipesFile2) {
     console.log("test");
     recipesFile2.forEach((element) => {
@@ -1875,6 +1885,7 @@
         element.ustensils,
         element.ingredients
       ));
+      addToIngredientList(recipes[recipes.length - 1].ingredients);
     });
   }
   async function displayRecipes(recipes2) {
@@ -1888,6 +1899,7 @@
   async function init() {
     parseRecipes(recipesFile);
     displayRecipes(recipes);
+    createFilters();
   }
   var recipes = [];
   init();

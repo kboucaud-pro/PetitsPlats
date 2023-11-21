@@ -1,6 +1,23 @@
 
 import {recipesFile} from "./data/recipes";
+import { Ingredient } from "./entity/ingredient";
 import { Recipe } from "./entity/recipe";
+
+async function createFilters(){
+	const filterCategories = document.querySelectorAll('.filter-type');
+
+	filterCategories.forEach(element => {
+		element.addEventListener('click', switchViewCategoryElement);
+	});
+}
+
+async function addToIngredientList(ingredients: Array<Ingredient>){
+	
+}
+
+async function switchViewCategoryElement(){
+
+}
 
 async function parseRecipes(recipesFile: Array<any>){
 	console.log('test');
@@ -17,6 +34,8 @@ async function parseRecipes(recipesFile: Array<any>){
 			element.ustensils,
 			element.ingredients
 		));
+
+		addToIngredientList(recipes[recipes.length - 1].ingredients);
 	});
 }
 
@@ -33,8 +52,10 @@ async function displayRecipes(recipes: Recipe[]){
 async function init(){
 	parseRecipes(recipesFile);
 	displayRecipes(recipes);
+	createFilters();
 }
 
 let recipes: Array<Recipe> = [];
+let ingredients: Array<Ingredient> = [];
 
 init();
