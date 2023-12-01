@@ -69,14 +69,20 @@ main {
 		background-color: #ededed;
 		margin-left: 3%;
 
-		.filter-type {
-			padding: 17px;
-			color: #1B1B1B;
-			background-color: #FFFFFF;
+		.filter-menu {
+			display: flex;
+			flex-direction: column;
+			background-color: #ffffff;
 			border-radius: 11px;
+			width: 200px;
+			position: relative;
+		}
+
+		.filter-title {
+			padding: 17px;
+			color: #1b1b1b;
 			display: flex;
 			justify-content: space-between;
-			width: 200px;
 		}
 
 		.hidden-element-list {
@@ -85,17 +91,78 @@ main {
 		}
 
 		.showed-element-list {
-			height: 400px;
+			width: 100%;
 			display: flex;
 			flex-direction: column;
 			overflow: scroll;
+			color: var(--Black, #1b1b1b);
+			font-family: "Manrope";
+			font-size: 14px;
+			z-index: 99;
+			position: absolute;
+			background-color: #ffffff;
+			border-bottom-left-radius: 11px;
+			border-bottom-right-radius: 11px;
+			top: 45px;
+
+			#search-ingredient {
+				width: 80%;
+				height: 35px;
+				border-radius: 2px;
+				margin-left: 8%;
+				border: 1px solid var(--Light-Grey, #c6c6c6);
+
+				&:focus {
+					outline: none;
+				}
+			}
+
+			.filter-element {
+				margin-bottom: 13px;
+				padding-left: 16px;
+			}
+
+			.filter-element-selected {
+				background: #ffd15b;
+				padding: 10px 16px;
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+
+				.quit-selected-choice {
+					display: none;
+				}
+
+				&:hover {
+					color: #000000;
+					font-weight: 500;
+
+					.quit-selected-choice {
+						display: block;
+					}
+				}
+			}
+
+			.selected-options {
+				display: flex;
+				flex-direction: column;
+				margin-top: 10px;
+				margin-bottom: 10px;
+			}
+
+			.filter-ingredient-list {
+				display: flex;
+				flex-direction: column;
+				height: 200px;
+				overflow: scroll;
+			}
 		}
 	}
 
 	.recipes-cards {
 		display: flex;
 		flex-direction: row;
-		flex-wrap:wrap;
+		flex-wrap: wrap;
 		justify-content: space-around;
 		padding-top: 50px;
 
