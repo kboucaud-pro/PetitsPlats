@@ -40,17 +40,24 @@ var recipes_1 = require("./data/recipes");
 var recipe_1 = require("./entity/recipe");
 function activateFilter(filter) {
     return __awaiter(this, void 0, void 0, function () {
-        var activeFilterArea, filterText, selectedOptionsDOM;
+        var activeFilterArea, currentFilterArea, filterText, selectedOptionsDOM, currentFiltersDOM;
         return __generator(this, function (_a) {
             activeFilterArea = filter.target.parentElement.previousElementSibling;
+            currentFilterArea = document.querySelector('.current-filters');
             filterText = filter.target.innerHTML;
             //Do a ifselse for each filter
             selectedFilterIngredient.push(filterText);
             selectedFilterIngredient = selectedFilterIngredient.sort();
             activeFilterArea.innerHTML = '';
-            selectedFilterIngredient.forEach(function (element) { activeFilterArea.innerHTML += "<span class='filter-element-selected'>" + element + "<span class=\"fa-solid fa-circle-xmark quit-selected-choice\"></span></span>"; });
+            currentFilterArea.innerHTML = '';
+            selectedFilterIngredient.forEach(function (element) {
+                activeFilterArea.innerHTML += "<span class='filter-element-selected'>" + element + "<span class=\"fa-solid fa-circle-xmark quit-selected-choice\"></span></span>";
+                currentFilterArea.innerHTML += "<span class='current-filter-selected'>" + element + "<span class=\"fa-solid fa-xmark\"></span></span>";
+            });
             selectedOptionsDOM = document.querySelectorAll('.filter-element-selected');
+            currentFiltersDOM = document.querySelectorAll('.current-filter-selected');
             selectedOptionsDOM.forEach(function (element) { element.addEventListener('click', disableFilter); });
+            currentFiltersDOM.forEach(function (element) { element.addEventListener('click', disableCurrentFilter); });
             filter.target.remove();
             return [2 /*return*/];
         });
@@ -58,13 +65,32 @@ function activateFilter(filter) {
 }
 function disableFilter(filter) {
     return __awaiter(this, void 0, void 0, function () {
-        var inactiveFilterArea, filterText;
+        var currentFilters, filterText;
         return __generator(this, function (_a) {
-            inactiveFilterArea = filter.target.parentElement.nextElementSibling;
+            currentFilters = document.querySelectorAll('.current-filter-selected');
             filterText = filter.target.innerText;
+            currentFilters.forEach(function (element) { element.innerText == filterText ? element.remove() : 0; });
             selectedFilterIngredient.splice(selectedFilterIngredient.indexOf(filterText), 1);
             createFilterOptionIngredient();
             filter.target.remove();
+            return [2 /*return*/];
+        });
+    });
+}
+/**
+ * Delete filter from current
+ */
+function disableCurrentFilter(DOMelement) {
+    return __awaiter(this, void 0, void 0, function () {
+        var currentFilter, selectedOptions, filterText;
+        return __generator(this, function (_a) {
+            currentFilter = DOMelement.target;
+            selectedOptions = document.querySelectorAll('.filter-element-selected');
+            filterText = currentFilter.innerText;
+            selectedOptions.forEach(function (element) { element.innerText == filterText ? element.remove() : 0; });
+            selectedFilterIngredient.splice(selectedFilterIngredient.indexOf(filterText), 1);
+            createFilterOptionIngredient();
+            currentFilter.remove();
             return [2 /*return*/];
         });
     });
@@ -120,6 +146,10 @@ function switchViewCategoryElement(DOMelement) {
         var subMenu;
         return __generator(this, function (_a) {
             subMenu = DOMelement.target.nextElementSibling;
+            //Unroll if click on chevron
+            if (subMenu == null) {
+                subMenu = DOMelement.target.parentNode.nextElementSibling;
+            }
             if (subMenu.classList.contains('hidden-element-list')) {
                 subMenu.classList.remove('hidden-element-list');
                 subMenu.classList.add('showed-element-list');
@@ -163,7 +193,6 @@ function init() {
             parseRecipes(recipes_1.recipesFile);
             displayRecipes(recipes);
             createFiltersTriggers();
-            console.log(ingredientsList.sort());
             return [2 /*return*/];
         });
     });

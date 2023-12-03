@@ -1863,25 +1863,46 @@
   // scripts/app.ts
   async function activateFilter(filter) {
     let activeFilterArea = filter.target.parentElement.previousElementSibling;
+    let currentFilterArea = document.querySelector(".current-filters");
     const filterText = filter.target.innerHTML;
     selectedFilterIngredient.push(filterText);
     selectedFilterIngredient = selectedFilterIngredient.sort();
     activeFilterArea.innerHTML = "";
+    currentFilterArea.innerHTML = "";
     selectedFilterIngredient.forEach((element) => {
       activeFilterArea.innerHTML += `<span class='filter-element-selected'>${element}<span class="fa-solid fa-circle-xmark quit-selected-choice"></span></span>`;
+      currentFilterArea.innerHTML += `<span class='current-filter-selected'>${element}<span class="fa-solid fa-xmark"></span></span>`;
     });
     const selectedOptionsDOM = document.querySelectorAll(".filter-element-selected");
+    const currentFiltersDOM = document.querySelectorAll(".current-filter-selected");
     selectedOptionsDOM.forEach((element) => {
       element.addEventListener("click", disableFilter);
+    });
+    currentFiltersDOM.forEach((element) => {
+      element.addEventListener("click", disableCurrentFilter);
     });
     filter.target.remove();
   }
   async function disableFilter(filter) {
-    let inactiveFilterArea = filter.target.parentElement.nextElementSibling;
+    let currentFilters = document.querySelectorAll(".current-filter-selected");
     const filterText = filter.target.innerText;
+    currentFilters.forEach((element) => {
+      element.innerText == filterText ? element.remove() : 0;
+    });
     selectedFilterIngredient.splice(selectedFilterIngredient.indexOf(filterText), 1);
     createFilterOptionIngredient();
     filter.target.remove();
+  }
+  async function disableCurrentFilter(DOMelement) {
+    let currentFilter = DOMelement.target;
+    let selectedOptions = document.querySelectorAll(".filter-element-selected");
+    let filterText = currentFilter.innerText;
+    selectedOptions.forEach((element) => {
+      element.innerText == filterText ? element.remove() : 0;
+    });
+    selectedFilterIngredient.splice(selectedFilterIngredient.indexOf(filterText), 1);
+    createFilterOptionIngredient();
+    currentFilter.remove();
   }
   async function createFilterOptionIngredient(search) {
     const ingredientOptions = document.querySelector(".filter-ingredient-list");
@@ -1916,6 +1937,9 @@
   }
   async function switchViewCategoryElement(DOMelement) {
     let subMenu = DOMelement.target.nextElementSibling;
+    if (subMenu == null) {
+      subMenu = DOMelement.target.parentNode.nextElementSibling;
+    }
     if (subMenu.classList.contains("hidden-element-list")) {
       subMenu.classList.remove("hidden-element-list");
       subMenu.classList.add("showed-element-list");
@@ -1952,7 +1976,6 @@
     parseRecipes(recipesFile);
     displayRecipes(recipes);
     createFiltersTriggers();
-    console.log(ingredientsList.sort());
   }
   var recipes = [];
   var ingredientsList = [];

@@ -5,6 +5,7 @@ import { Recipe } from "./entity/recipe";
 
 async function activateFilter(filter){
 	let activeFilterArea = filter.target.parentElement.previousElementSibling;
+	let currentFilterArea = document.querySelector('.current-filters');
 
 	const filterText = filter.target.innerHTML;
 
@@ -14,24 +15,49 @@ async function activateFilter(filter){
 	selectedFilterIngredient = selectedFilterIngredient.sort();
 
 	activeFilterArea.innerHTML = '';
-	selectedFilterIngredient.forEach(element => {activeFilterArea.innerHTML += `<span class='filter-element-selected'>${element}<span class="fa-solid fa-circle-xmark quit-selected-choice"></span></span>`});
+	currentFilterArea.innerHTML = '';
+	selectedFilterIngredient.forEach(element => {
+		activeFilterArea.innerHTML += `<span class='filter-element-selected'>${element}<span class="fa-solid fa-circle-xmark quit-selected-choice"></span></span>`;
+		currentFilterArea.innerHTML += `<span class='current-filter-selected'>${element}<span class="fa-solid fa-xmark"></span></span>`;
+	});
 
 	const selectedOptionsDOM = document.querySelectorAll('.filter-element-selected');
+	const currentFiltersDOM = document.querySelectorAll('.current-filter-selected');
 
 	selectedOptionsDOM.forEach(element => {element.addEventListener('click', disableFilter)});
+	currentFiltersDOM.forEach(element => {element.addEventListener('click', disableCurrentFilter)});
 	filter.target.remove();
 }
 
 async function disableFilter(filter){
-	let inactiveFilterArea = filter.target.parentElement.nextElementSibling;
+	let currentFilters = document.querySelectorAll('.current-filter-selected');
 
 	const filterText = filter.target.innerText;
+
+	currentFilters.forEach(element => {element.innerText == filterText ? element.remove() : 0});
 
 	selectedFilterIngredient.splice(selectedFilterIngredient.indexOf(filterText), 1);
 
 	createFilterOptionIngredient();
 
 	filter.target.remove();
+}
+
+/**
+ * Delete filter from current 
+ */
+async function disableCurrentFilter(DOMelement){
+	let currentFilter = DOMelement.target;
+	let selectedOptions = document.querySelectorAll('.filter-element-selected');
+
+	let filterText = currentFilter.innerText;
+
+	selectedOptions.forEach(element => {element.innerText == filterText ? element.remove() : 0});
+	selectedFilterIngredient.splice(selectedFilterIngredient.indexOf(filterText), 1);
+
+	createFilterOptionIngredient();
+
+	currentFilter.remove();
 }
 
 async function createFilterOptionIngredient(search ?:string){
@@ -73,7 +99,13 @@ async function addToIngredientList(ingredients: Array<Ingredient>){
 }
 
 async function switchViewCategoryElement(DOMelement){
+
 	let subMenu = DOMelement.target.nextElementSibling;
+
+	//Unroll if click on chevron
+	if (subMenu == null){
+		subMenu = DOMelement.target.parentNode.nextElementSibling;
+	}
 
 	if (subMenu.classList.contains('hidden-element-list')){
 		subMenu.classList.remove('hidden-element-list');
@@ -117,7 +149,6 @@ async function init(){
 	displayRecipes(recipes);
 	createFiltersTriggers();
 
-	console.log(ingredientsList.sort());
 }
 
 let recipes: Array<Recipe> = [];

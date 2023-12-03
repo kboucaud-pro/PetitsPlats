@@ -139,6 +139,25 @@ main .filters .showed-element-list .filter-ingredient-list {
   height: 200px;
   overflow: scroll;
 }
+main .current-filters {
+  display: flex;
+  flex-direction: row;
+  margin-left: 3%;
+  margin-top: 10px;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+main .current-filters .current-filter-selected {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 200px;
+  background-color: #ffd15b;
+  color: #1b1b1b;
+  padding: 17px 18px;
+  border-radius: 10px;
+  margin-right: 20px;
+}
 main .recipes-cards {
   display: flex;
   flex-direction: row;
