@@ -38,6 +38,15 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 exports.__esModule = true;
 var recipes_1 = require("./data/recipes");
 var recipe_1 = require("./entity/recipe");
+function updateResearch(e) {
+    return __awaiter(this, void 0, void 0, function () {
+        return __generator(this, function (_a) {
+            searchValue = e.target.value;
+            applyFilters();
+            return [2 /*return*/];
+        });
+    });
+}
 function activateFilter(filter) {
     return __awaiter(this, void 0, void 0, function () {
         var activeFilterArea, currentFilterArea, filterText, selectedOptionsDOM, currentFiltersDOM;
@@ -102,11 +111,18 @@ function applyFilters() {
     return __awaiter(this, void 0, void 0, function () {
         return __generator(this, function (_a) {
             resultRecipes = [];
+            //if no filter enable, we search on source array
+            if (selectedFilterIngredient.length == 0) {
+                resultRecipes = recipes;
+            }
             recipes.forEach(function (recipe) {
-                if (selectedFilterIngredient.every(function (v) { return recipe.ingredientsName.includes(v); })) {
+                if (selectedFilterIngredient.length > 0 && selectedFilterIngredient.every(function (v) { return recipe.ingredientsName.includes(v); })) {
                     resultRecipes.push(recipe);
                 }
             });
+            if (searchValue.length >= 3) {
+                resultRecipes = resultRecipes.filter(function (element) { return (element.name.includes(searchValue) || element.description.includes(searchValue)); });
+            }
             displayRecipes(resultRecipes);
             return [2 /*return*/];
         });
@@ -186,6 +202,7 @@ function parseRecipes(recipesFile) {
                 recipes.push(new recipe_1.Recipe(element.id, element.name, element.image, element.servings, element.time, element.description, element.appliance, element.ustensils, element.ingredients));
                 addToIngredientList(recipes[recipes.length - 1].ingredients);
             });
+            resultRecipes = recipes;
             return [2 /*return*/];
         });
     });
@@ -207,10 +224,13 @@ function displayRecipes(recipes) {
 }
 function init() {
     return __awaiter(this, void 0, void 0, function () {
+        var researchField;
         return __generator(this, function (_a) {
             parseRecipes(recipes_1.recipesFile);
             displayRecipes(recipes);
             createFiltersTriggers();
+            researchField = document.querySelector('#search-bar');
+            researchField === null || researchField === void 0 ? void 0 : researchField.addEventListener('input', updateResearch);
             return [2 /*return*/];
         });
     });
@@ -219,4 +239,5 @@ var recipes = [];
 var resultRecipes = [];
 var ingredientsList = [];
 var selectedFilterIngredient = [];
+var searchValue = '';
 init();

@@ -1864,6 +1864,10 @@
   };
 
   // scripts/app.ts
+  async function updateResearch(e) {
+    searchValue = e.target.value;
+    applyFilters();
+  }
   async function activateFilter(filter) {
     let activeFilterArea = filter.target.parentElement.previousElementSibling;
     let currentFilterArea = document.querySelector(".current-filters");
@@ -1912,11 +1916,19 @@
   }
   async function applyFilters() {
     resultRecipes = [];
+    if (selectedFilterIngredient.length == 0) {
+      resultRecipes = recipes;
+    }
     recipes.forEach((recipe) => {
-      if (selectedFilterIngredient.every((v) => recipe.ingredientsName.includes(v))) {
+      if (selectedFilterIngredient.length > 0 && selectedFilterIngredient.every((v) => recipe.ingredientsName.includes(v))) {
         resultRecipes.push(recipe);
       }
     });
+    if (searchValue.length >= 3) {
+      resultRecipes = resultRecipes.filter(
+        (element) => element.name.includes(searchValue) || element.description.includes(searchValue)
+      );
+    }
     displayRecipes(resultRecipes);
   }
   async function createFilterOptionIngredient(search) {
@@ -1978,6 +1990,7 @@
       ));
       addToIngredientList(recipes[recipes.length - 1].ingredients);
     });
+    resultRecipes = recipes;
   }
   async function displayRecipes(recipes2) {
     let recipesArea = document.querySelector(".recipes-cards");
@@ -1992,10 +2005,13 @@
     parseRecipes(recipesFile);
     displayRecipes(recipes);
     createFiltersTriggers();
+    const researchField = document.querySelector("#search-bar");
+    researchField?.addEventListener("input", updateResearch);
   }
   var recipes = [];
   var resultRecipes = [];
   var ingredientsList = [];
   var selectedFilterIngredient = [];
+  var searchValue = "";
   init();
 })();
