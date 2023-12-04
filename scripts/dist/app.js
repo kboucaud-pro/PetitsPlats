@@ -38,21 +38,11 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 exports.__esModule = true;
 var recipes_1 = require("./data/recipes");
 var recipe_1 = require("./entity/recipe");
-function research(e) {
+function updateResearch(e) {
     return __awaiter(this, void 0, void 0, function () {
-        var searchValue, conformRecipes;
         return __generator(this, function (_a) {
-            if (e.target.textLength < 3) {
-                return [2 /*return*/, null];
-            }
             searchValue = e.target.value;
-            conformRecipes = [];
-            recipes.forEach(function (element) {
-                if (element.name.includes(searchValue) || element.description.includes(searchValue)) {
-                    conformRecipes.push(element);
-                }
-            });
-            displayRecipes(conformRecipes);
+            applyFilters();
             return [2 /*return*/];
         });
     });
@@ -119,14 +109,29 @@ function disableCurrentFilter(DOMelement) {
 }
 function applyFilters() {
     return __awaiter(this, void 0, void 0, function () {
+        var conformRecipes;
         return __generator(this, function (_a) {
             resultRecipes = [];
+            conformRecipes = [];
+            if (selectedFilterIngredient.length == 0) {
+                resultRecipes = recipes;
+            }
             recipes.forEach(function (recipe) {
-                if (selectedFilterIngredient.every(function (v) { return recipe.ingredientsName.includes(v); })) {
+                if (selectedFilterIngredient.length > 0 && selectedFilterIngredient.every(function (v) { return recipe.ingredientsName.includes(v); })) {
                     resultRecipes.push(recipe);
                 }
             });
-            displayRecipes(resultRecipes);
+            if (searchValue.length >= 3) {
+                resultRecipes.forEach(function (element) {
+                    if (element.name.includes(searchValue) || element.description.includes(searchValue)) {
+                        conformRecipes.push(element);
+                    }
+                });
+            }
+            else {
+                conformRecipes = resultRecipes;
+            }
+            displayRecipes(conformRecipes);
             return [2 /*return*/];
         });
     });
@@ -232,7 +237,7 @@ function init() {
             displayRecipes(recipes);
             createFiltersTriggers();
             researchField = document.querySelector('#search-bar');
-            researchField === null || researchField === void 0 ? void 0 : researchField.addEventListener('input', research);
+            researchField === null || researchField === void 0 ? void 0 : researchField.addEventListener('input', updateResearch);
             return [2 /*return*/];
         });
     });
@@ -241,4 +246,5 @@ var recipes = [];
 var resultRecipes = [];
 var ingredientsList = [];
 var selectedFilterIngredient = [];
+var searchValue = '';
 init();

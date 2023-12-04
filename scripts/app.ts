@@ -3,22 +3,10 @@ import { recipesFile } from "./data/recipes";
 import { Ingredient } from "./entity/ingredient";
 import { Recipe } from "./entity/recipe";
 
-async function research(e: Event){
-	if (e.target.textLength < 3){
-		return null;
-	}
+async function updateResearch(e: Event){
+	searchValue = e.target.value;
 
-	let searchValue = e.target.value;
-
-	let conformRecipes: Array<Recipe> = [];
-
-	recipes.forEach(element => {
-		if (element.name.includes(searchValue) || element.description.includes(searchValue)){
-			conformRecipes.push(element);
-		}
-	});
-
-	displayRecipes(conformRecipes);
+	applyFilters();
 }
 
 async function activateFilter(filter) {
@@ -88,14 +76,29 @@ async function disableCurrentFilter(DOMelement) {
 async function applyFilters() {
 
 	resultRecipes = [];
+	let conformRecipes : Array<Recipe> = [];
+
+	if (selectedFilterIngredient.length == 0){
+		resultRecipes = recipes;
+	}
 
 	recipes.forEach(recipe => {
-		if (selectedFilterIngredient.every(v => recipe.ingredientsName.includes(v))) {
+		if (selectedFilterIngredient.length > 0 && selectedFilterIngredient.every(v => recipe.ingredientsName.includes(v))) {
 			resultRecipes.push(recipe);
 		}
 	})
 
-	displayRecipes(resultRecipes);
+	if (searchValue.length >= 3){
+		resultRecipes.forEach(element => {
+			if (element.name.includes(searchValue) || element.description.includes(searchValue)){
+				conformRecipes.push(element);
+			}
+		});
+	} else {
+		conformRecipes = resultRecipes;
+	}
+
+	displayRecipes(conformRecipes);
 }
 
 async function createFilterOptionIngredient(search?: string) {
@@ -191,12 +194,13 @@ async function init() {
 
 	const researchField = document.querySelector('#search-bar');
 
-	researchField?.addEventListener('input', research);
+	researchField?.addEventListener('input', updateResearch);
 }
 
 let recipes: Array<Recipe> = [];
 let resultRecipes: Array<Recipe> = [];
 let ingredientsList: Array<string> = [];
 let selectedFilterIngredient: Array<string> = [];
+let searchValue = '';
 
 init();

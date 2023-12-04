@@ -1864,18 +1864,9 @@
   };
 
   // scripts/app.ts
-  async function research(e) {
-    if (e.target.textLength < 3) {
-      return null;
-    }
-    let searchValue = e.target.value;
-    let conformRecipes = [];
-    recipes.forEach((element) => {
-      if (element.name.includes(searchValue) || element.description.includes(searchValue)) {
-        conformRecipes.push(element);
-      }
-    });
-    displayRecipes(conformRecipes);
+  async function updateResearch(e) {
+    searchValue = e.target.value;
+    applyFilters();
   }
   async function activateFilter(filter) {
     let activeFilterArea = filter.target.parentElement.previousElementSibling;
@@ -1925,12 +1916,25 @@
   }
   async function applyFilters() {
     resultRecipes = [];
+    let conformRecipes = [];
+    if (selectedFilterIngredient.length == 0) {
+      resultRecipes = recipes;
+    }
     recipes.forEach((recipe) => {
-      if (selectedFilterIngredient.every((v) => recipe.ingredientsName.includes(v))) {
+      if (selectedFilterIngredient.length > 0 && selectedFilterIngredient.every((v) => recipe.ingredientsName.includes(v))) {
         resultRecipes.push(recipe);
       }
     });
-    displayRecipes(resultRecipes);
+    if (searchValue.length >= 3) {
+      resultRecipes.forEach((element) => {
+        if (element.name.includes(searchValue) || element.description.includes(searchValue)) {
+          conformRecipes.push(element);
+        }
+      });
+    } else {
+      conformRecipes = resultRecipes;
+    }
+    displayRecipes(conformRecipes);
   }
   async function createFilterOptionIngredient(search) {
     const ingredientOptions = document.querySelector(".filter-ingredient-list");
@@ -2006,11 +2010,12 @@
     displayRecipes(recipes);
     createFiltersTriggers();
     const researchField = document.querySelector("#search-bar");
-    researchField?.addEventListener("input", research);
+    researchField?.addEventListener("input", updateResearch);
   }
   var recipes = [];
   var resultRecipes = [];
   var ingredientsList = [];
   var selectedFilterIngredient = [];
+  var searchValue = "";
   init();
 })();
