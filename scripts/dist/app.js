@@ -59,6 +59,7 @@ function activateFilter(filter) {
             selectedOptionsDOM.forEach(function (element) { element.addEventListener('click', disableFilter); });
             currentFiltersDOM.forEach(function (element) { element.addEventListener('click', disableCurrentFilter); });
             filter.target.remove();
+            applyFilters();
             return [2 /*return*/];
         });
     });
@@ -73,6 +74,7 @@ function disableFilter(filter) {
             selectedFilterIngredient.splice(selectedFilterIngredient.indexOf(filterText), 1);
             createFilterOptionIngredient();
             filter.target.remove();
+            applyFilters();
             return [2 /*return*/];
         });
     });
@@ -91,6 +93,21 @@ function disableCurrentFilter(DOMelement) {
             selectedFilterIngredient.splice(selectedFilterIngredient.indexOf(filterText), 1);
             createFilterOptionIngredient();
             currentFilter.remove();
+            applyFilters();
+            return [2 /*return*/];
+        });
+    });
+}
+function applyFilters() {
+    return __awaiter(this, void 0, void 0, function () {
+        return __generator(this, function (_a) {
+            resultRecipes = [];
+            recipes.forEach(function (recipe) {
+                if (selectedFilterIngredient.every(function (v) { return recipe.ingredientsName.includes(v); })) {
+                    resultRecipes.push(recipe);
+                }
+            });
+            displayRecipes(resultRecipes);
             return [2 /*return*/];
         });
     });
@@ -178,6 +195,7 @@ function displayRecipes(recipes) {
         var recipesArea;
         return __generator(this, function (_a) {
             recipesArea = document.querySelector('.recipes-cards');
+            recipesArea.innerHTML = '';
             if (recipesArea !== null) {
                 recipes.forEach(function (recipe) {
                     recipesArea.innerHTML += recipe.getDOMCard();
@@ -198,6 +216,7 @@ function init() {
     });
 }
 var recipes = [];
+var resultRecipes = [];
 var ingredientsList = [];
 var selectedFilterIngredient = [];
 init();

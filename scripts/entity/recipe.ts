@@ -10,7 +10,8 @@ export class Recipe {
 		public description: string,
 		public appliance: string,
 		public ustensils: Array<string>,
-		public ingredients: Array<any>
+		public ingredients: Array<any>,
+		public ingredientsName ?: Array<any>
 	) {
 		this.id = id;
 		this.name = name;
@@ -21,9 +22,11 @@ export class Recipe {
 		this.appliance = appliance;
 		this.ustensils = ustensils;
 		this.ingredients = [];
+		this.ingredientsName = [];
 
 		ingredients.forEach(element => {
 			this.ingredients.push(new Ingredient(element.ingredient, element.quantity, element.unit));
+			this.ingredientsName.push(element.ingredient);
 		});
 	}
 

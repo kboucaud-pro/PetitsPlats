@@ -1808,7 +1808,7 @@
 
   // scripts/entity/recipe.ts
   var Recipe = class {
-    constructor(id, name, image, servings, time, description, appliance, ustensils, ingredients) {
+    constructor(id, name, image, servings, time, description, appliance, ustensils, ingredients, ingredientsName) {
       this.id = id;
       this.name = name;
       this.image = image;
@@ -1818,6 +1818,7 @@
       this.appliance = appliance;
       this.ustensils = ustensils;
       this.ingredients = ingredients;
+      this.ingredientsName = ingredientsName;
       this.id = id;
       this.name = name;
       this.image = image;
@@ -1827,8 +1828,10 @@
       this.appliance = appliance;
       this.ustensils = ustensils;
       this.ingredients = [];
+      this.ingredientsName = [];
       ingredients.forEach((element) => {
         this.ingredients.push(new Ingredient(element.ingredient, element.quantity, element.unit));
+        this.ingredientsName.push(element.ingredient);
       });
     }
     /**
@@ -1882,6 +1885,7 @@
       element.addEventListener("click", disableCurrentFilter);
     });
     filter.target.remove();
+    applyFilters();
   }
   async function disableFilter(filter) {
     let currentFilters = document.querySelectorAll(".current-filter-selected");
@@ -1892,6 +1896,7 @@
     selectedFilterIngredient.splice(selectedFilterIngredient.indexOf(filterText), 1);
     createFilterOptionIngredient();
     filter.target.remove();
+    applyFilters();
   }
   async function disableCurrentFilter(DOMelement) {
     let currentFilter = DOMelement.target;
@@ -1903,6 +1908,16 @@
     selectedFilterIngredient.splice(selectedFilterIngredient.indexOf(filterText), 1);
     createFilterOptionIngredient();
     currentFilter.remove();
+    applyFilters();
+  }
+  async function applyFilters() {
+    resultRecipes = [];
+    recipes.forEach((recipe) => {
+      if (selectedFilterIngredient.every((v) => recipe.ingredientsName.includes(v))) {
+        resultRecipes.push(recipe);
+      }
+    });
+    displayRecipes(resultRecipes);
   }
   async function createFilterOptionIngredient(search) {
     const ingredientOptions = document.querySelector(".filter-ingredient-list");
@@ -1966,6 +1981,7 @@
   }
   async function displayRecipes(recipes2) {
     let recipesArea = document.querySelector(".recipes-cards");
+    recipesArea.innerHTML = "";
     if (recipesArea !== null) {
       recipes2.forEach((recipe) => {
         recipesArea.innerHTML += recipe.getDOMCard();
@@ -1978,6 +1994,7 @@
     createFiltersTriggers();
   }
   var recipes = [];
+  var resultRecipes = [];
   var ingredientsList = [];
   var selectedFilterIngredient = [];
   init();
