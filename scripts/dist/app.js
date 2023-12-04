@@ -38,6 +38,25 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 exports.__esModule = true;
 var recipes_1 = require("./data/recipes");
 var recipe_1 = require("./entity/recipe");
+function research(e) {
+    return __awaiter(this, void 0, void 0, function () {
+        var searchValue, conformRecipes;
+        return __generator(this, function (_a) {
+            if (e.target.textLength < 3) {
+                return [2 /*return*/, null];
+            }
+            searchValue = e.target.value;
+            conformRecipes = [];
+            recipes.forEach(function (element) {
+                if (element.name.includes(searchValue) || element.description.includes(searchValue)) {
+                    conformRecipes.push(element);
+                }
+            });
+            displayRecipes(conformRecipes);
+            return [2 /*return*/];
+        });
+    });
+}
 function activateFilter(filter) {
     return __awaiter(this, void 0, void 0, function () {
         var activeFilterArea, currentFilterArea, filterText, selectedOptionsDOM, currentFiltersDOM;
@@ -195,8 +214,8 @@ function displayRecipes(recipes) {
         var recipesArea;
         return __generator(this, function (_a) {
             recipesArea = document.querySelector('.recipes-cards');
-            recipesArea.innerHTML = '';
             if (recipesArea !== null) {
+                recipesArea.innerHTML = '';
                 recipes.forEach(function (recipe) {
                     recipesArea.innerHTML += recipe.getDOMCard();
                 });
@@ -207,10 +226,13 @@ function displayRecipes(recipes) {
 }
 function init() {
     return __awaiter(this, void 0, void 0, function () {
+        var researchField;
         return __generator(this, function (_a) {
             parseRecipes(recipes_1.recipesFile);
             displayRecipes(recipes);
             createFiltersTriggers();
+            researchField = document.querySelector('#search-bar');
+            researchField === null || researchField === void 0 ? void 0 : researchField.addEventListener('input', research);
             return [2 /*return*/];
         });
     });

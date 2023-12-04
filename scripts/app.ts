@@ -3,6 +3,24 @@ import { recipesFile } from "./data/recipes";
 import { Ingredient } from "./entity/ingredient";
 import { Recipe } from "./entity/recipe";
 
+async function research(e: Event){
+	if (e.target.textLength < 3){
+		return null;
+	}
+
+	let searchValue = e.target.value;
+
+	let conformRecipes: Array<Recipe> = [];
+
+	recipes.forEach(element => {
+		if (element.name.includes(searchValue) || element.description.includes(searchValue)){
+			conformRecipes.push(element);
+		}
+	});
+
+	displayRecipes(conformRecipes);
+}
+
 async function activateFilter(filter) {
 	let activeFilterArea = filter.target.parentElement.previousElementSibling;
 	let currentFilterArea = document.querySelector('.current-filters');
