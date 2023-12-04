@@ -80,7 +80,7 @@ function disableFilter(filter) {
     });
 }
 /**
- * Delete filter from current
+ * Delete filter from current TODO remove filter on cross click
  */
 function disableCurrentFilter(DOMelement) {
     return __awaiter(this, void 0, void 0, function () {

@@ -48,7 +48,7 @@ async function disableFilter(filter) {
 }
 
 /**
- * Delete filter from current 
+ * Delete filter from current TODO remove filter on cross click
  */
 async function disableCurrentFilter(DOMelement) {
 	let currentFilter = DOMelement.target;
