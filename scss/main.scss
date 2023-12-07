@@ -74,6 +74,7 @@ main {
 			flex-direction: column;
 			background-color: #ffffff;
 			border-radius: 11px;
+			margin-right: 5%;
 			width: 200px;
 			position: relative;
 		}
@@ -105,7 +106,7 @@ main {
 			border-bottom-right-radius: 11px;
 			top: 45px;
 
-			#search-ingredient {
+			.filter-searchbar {
 				width: 80%;
 				height: 35px;
 				border-radius: 2px;
@@ -150,7 +151,7 @@ main {
 				margin-bottom: 10px;
 			}
 
-			.filter-ingredient-list {
+			.filter-list {
 				display: flex;
 				flex-direction: column;
 				height: 200px;
