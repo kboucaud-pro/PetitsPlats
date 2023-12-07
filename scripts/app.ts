@@ -3,8 +3,10 @@ import { recipesFile } from "./data/recipes";
 import { Ingredient } from "./entity/ingredient";
 import { Recipe } from "./entity/recipe";
 
-async function updateResearch(e: Event){
-	searchValue = e.target.value;
+async function updateResearch(e: Event) {
+	searchValue = encodeURI(e.target.value);
+
+	console.log(searchValue);
 
 	applyFilters();
 }
@@ -16,20 +18,20 @@ async function activateFilter(filter) {
 	const filterText = filter.target.innerHTML;
 	let filterType: string = '';
 
-	if (filter.target.parentNode.classList.contains('filter-ingredient-list')){
+	if (filter.target.parentNode.classList.contains('filter-ingredient-list')) {
 		filterType = 'ingredient';
-	} else if (filter.target.parentNode.classList.contains('filter-appliance-list')){
+	} else if (filter.target.parentNode.classList.contains('filter-appliance-list')) {
 		filterType = 'appliance';
-	} else if (filter.target.parentNode.classList.contains('filter-ustensil-list')){
+	} else if (filter.target.parentNode.classList.contains('filter-ustensil-list')) {
 		filterType = 'ustensil';
 	}
 
 	//Do a ifselse for each filter
-	if (filterType == 'ingredient'){
+	if (filterType == 'ingredient') {
 		selectedIngredient.push(filterText);
-	} else if (filterType == 'appliance'){
+	} else if (filterType == 'appliance') {
 		selectedAppliance.push(filterText);
-	} else if (filterType == 'ustensil'){
+	} else if (filterType == 'ustensil') {
 		selectedUstensils.push(filterText);
 	}
 
@@ -41,19 +43,19 @@ async function activateFilter(filter) {
 	currentFilterArea.innerHTML = '';
 	//A améliorer (function a part vraiment utile ?)
 	selectedIngredient.forEach(element => {
-		if (filterType == 'ingredient'){
+		if (filterType == 'ingredient') {
 			activeFilterArea.innerHTML += `<span class='filter-element-selected'>${element}<span class="fa-solid fa-circle-xmark quit-selected-choice"></span></span>`;
 		}
 		currentFilterArea.innerHTML += `<span class='current-filter-selected current-ingredient-selected'>${element}<span class="fa-solid fa-xmark"></span></span>`;
 	});
 	selectedAppliance.forEach(element => {
-		if (filterType == 'appliance'){
+		if (filterType == 'appliance') {
 			activeFilterArea.innerHTML += `<span class='filter-element-selected'>${element}<span class="fa-solid fa-circle-xmark quit-selected-choice"></span></span>`;
 		}
 		currentFilterArea.innerHTML += `<span class='current-filter-selected current-appliance-selected'>${element}<span class="fa-solid fa-xmark"></span></span>`;
 	});
 	selectedUstensils.forEach(element => {
-		if (filterType == 'ustensil'){
+		if (filterType == 'ustensil') {
 			activeFilterArea.innerHTML += `<span class='filter-element-selected'>${element}<span class="fa-solid fa-circle-xmark quit-selected-choice"></span></span>`;
 		}
 		currentFilterArea.innerHTML += `<span class='current-filter-selected current-ustensil-selected'>${element}<span class="fa-solid fa-xmark"></span></span>`;
@@ -77,11 +79,11 @@ async function disableFilter(filter) {
 
 	currentFilters.forEach(element => { element.innerText == filterText ? element.remove() : 0 });
 
-	if (parent.classList.contains('selected-ingredient-options')){
+	if (parent.classList.contains('selected-ingredient-options')) {
 		selectedIngredient.splice(selectedIngredient.indexOf(filterText), 1);
-	} else if (parent.classList.contains('selected-appliance-options')){
+	} else if (parent.classList.contains('selected-appliance-options')) {
 		selectedAppliance.splice(selectedAppliance.indexOf(filterText), 1);
-	} else if (parent.classList.contains('selected-ustensil-options')){
+	} else if (parent.classList.contains('selected-ustensil-options')) {
 		selectedUstensils.splice(selectedUstensils.indexOf(filterText), 1);
 	}
 
@@ -105,11 +107,11 @@ async function disableCurrentFilter(DOMelement) {
 
 	selectedOptions.forEach(element => { element.innerText == filterText ? element.remove() : 0 });
 
-	if (currentFilter.classList.contains('current-ingredient-selected')){
+	if (currentFilter.classList.contains('current-ingredient-selected')) {
 		selectedIngredient.splice(selectedIngredient.indexOf(filterText), 1);
-	} else if (currentFilter.classList.contains('current-appliance-selected')){
+	} else if (currentFilter.classList.contains('current-appliance-selected')) {
 		selectedAppliance.splice(selectedAppliance.indexOf(filterText), 1);
-	} else if (currentFilter.classList.contains('current-ustensil-selected')){
+	} else if (currentFilter.classList.contains('current-ustensil-selected')) {
 		selectedUstensils.splice(selectedUstensils.indexOf(filterText), 1);
 	}
 
@@ -125,23 +127,25 @@ async function disableCurrentFilter(DOMelement) {
 async function applyFilters() {
 
 	resultRecipes = [];
-	let conformRecipes : Array<Recipe> = [];
+	let conformRecipes: Array<Recipe> = [];
 
-	if (selectedIngredient.length == 0 && selectedUstensils.length == 0 && selectedAppliance.length == 0){
+	if (selectedIngredient.length == 0 && selectedUstensils.length == 0 && selectedAppliance.length == 0) {
 		resultRecipes = recipes;
 	}
 
-	recipes.forEach(recipe => {
-		if (selectedIngredient.every(v => recipe.ingredientsName.includes(v))
-			&& selectedUstensils.every(v => recipe.ustensils.includes(v))
-			&& selectedAppliance.every(v => recipe.appliance.includes(v))) {
-			resultRecipes.push(recipe);
-		}
-	})
+	if (resultRecipes.length == 0) {
+		recipes.forEach(recipe => {
+			if (selectedIngredient.every(v => recipe.ingredientsName.includes(v))
+				&& selectedUstensils.every(v => recipe.ustensils.includes(v))
+				&& selectedAppliance.every(v => recipe.appliance.includes(v))) {
+				resultRecipes.push(recipe);
+			}
+		});
+	}
 
-	if (searchValue.length >= 3){
+	if (searchValue.length >= 3) {
 		resultRecipes.forEach(element => {
-			if (element.name.includes(searchValue) || element.description.includes(searchValue)){
+			if (element.name.includes(searchValue) || element.description.includes(searchValue)) {
 				conformRecipes.push(element);
 			}
 		});
@@ -222,9 +226,9 @@ async function addToIngredientList(ingredients: Array<Ingredient>) {
 	});
 }
 
-async function addToUstensilsList(ustensils: Array<string>){
+async function addToUstensilsList(ustensils: Array<string>) {
 	ustensils.forEach(ustensil => {
-		if (!ustensilsList.includes(ustensil)){
+		if (!ustensilsList.includes(ustensil)) {
 			ustensilsList.push(ustensil);
 		}
 	})
@@ -264,7 +268,7 @@ async function parseRecipes(recipesFile: Array<any>) {
 
 		addToIngredientList(recipes[recipes.length - 1].ingredients);
 		addToUstensilsList(recipes[recipes.length - 1].ustensils);
-		if (!applianceList.includes(element.appliance)){
+		if (!applianceList.includes(element.appliance)) {
 			applianceList.push(element.appliance);
 		}
 	});
@@ -273,7 +277,7 @@ async function parseRecipes(recipesFile: Array<any>) {
 async function displayRecipes(recipes: Recipe[]) {
 	let recipesArea = document.querySelector('.recipes-cards');
 
-	if (recipesArea !== null){
+	if (recipesArea !== null) {
 		recipesArea.innerHTML = '';
 		recipes.forEach(recipe => {
 			recipesArea.innerHTML += recipe.getDOMCard();

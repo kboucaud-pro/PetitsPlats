@@ -41,7 +41,8 @@ var recipe_1 = require("./entity/recipe");
 function updateResearch(e) {
     return __awaiter(this, void 0, void 0, function () {
         return __generator(this, function (_a) {
-            searchValue = e.target.value;
+            searchValue = encodeURI(e.target.value);
+            console.log(searchValue);
             applyFilters();
             return [2 /*return*/];
         });
@@ -172,13 +173,15 @@ function applyFilters() {
             if (selectedIngredient.length == 0 && selectedUstensils.length == 0 && selectedAppliance.length == 0) {
                 resultRecipes = recipes;
             }
-            recipes.forEach(function (recipe) {
-                if (selectedIngredient.every(function (v) { return recipe.ingredientsName.includes(v); })
-                    && selectedUstensils.every(function (v) { return recipe.ustensils.includes(v); })
-                    && selectedAppliance.every(function (v) { return recipe.appliance.includes(v); })) {
-                    resultRecipes.push(recipe);
-                }
-            });
+            if (resultRecipes.length == 0) {
+                recipes.forEach(function (recipe) {
+                    if (selectedIngredient.every(function (v) { return recipe.ingredientsName.includes(v); })
+                        && selectedUstensils.every(function (v) { return recipe.ustensils.includes(v); })
+                        && selectedAppliance.every(function (v) { return recipe.appliance.includes(v); })) {
+                        resultRecipes.push(recipe);
+                    }
+                });
+            }
             if (searchValue.length >= 3) {
                 resultRecipes.forEach(function (element) {
                     if (element.name.includes(searchValue) || element.description.includes(searchValue)) {
