@@ -1964,15 +1964,11 @@
   async function applyFilters() {
     resultRecipes = [];
     let conformRecipes = [];
-    if (selectedFilterIngredient.length == 0) {
+    if (selectedIngredient.length == 0 && selectedUstensils.length == 0 && selectedAppliance.length == 0) {
       resultRecipes = recipes;
     }
     recipes.forEach((recipe) => {
-<<<<<<< HEAD
-      if (selectedFilterIngredient.length > 0 && selectedFilterIngredient.every((v) => recipe.ingredientsName.includes(v))) {
-=======
       if (selectedIngredient.every((v) => recipe.ingredientsName.includes(v)) && selectedUstensils.every((v) => recipe.ustensils.includes(v)) && selectedAppliance.every((v) => recipe.appliance.includes(v))) {
->>>>>>> master
         resultRecipes.push(recipe);
       }
     });
@@ -2105,15 +2101,11 @@
   var recipes = [];
   var resultRecipes = [];
   var ingredientsList = [];
-<<<<<<< HEAD
-  var selectedFilterIngredient = [];
-  var searchValue = "";
-=======
   var applianceList = [];
   var ustensilsList = [];
   var selectedIngredient = [];
   var selectedAppliance = [];
   var selectedUstensils = [];
->>>>>>> master
+  var searchValue = "";
   init();
 })();
