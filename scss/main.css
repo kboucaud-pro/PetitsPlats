@@ -55,6 +55,7 @@ header .search-zone #search-button:hover {
 
 main {
   width: 100%;
+  min-height: 400px;
   background-color: #ededed;
 }
 main .filters {
@@ -240,4 +241,8 @@ main .recipes-cards .recipe-card .recipe .ingredients .ingredient h5 {
 main .recipes-cards .recipe-card .recipe .ingredients .ingredient .quantity {
   color: var(--Grey, #7a7a7a);
   font-size: 14px;
+}
+main .recipes-cards .recipe-not-found {
+  color: #7a7a7a;
+  font-size: 20px;
 }/*# sourceMappingURL=main.css.map */
