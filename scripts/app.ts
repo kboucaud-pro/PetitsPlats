@@ -4,7 +4,7 @@ import { Ingredient } from "./entity/ingredient";
 import { Recipe } from "./entity/recipe";
 
 async function updateResearch(e: Event) {
-	searchValue = e.target.value;
+	searchValue = encodeURI(e.target.value);
 
 	applyFilters();
 }
@@ -131,14 +131,16 @@ async function applyFilters() {
 		resultRecipes = recipes;
 	}
 
-	recipes.forEach(recipe => {
-		if (selectedIngredient.every(v => recipe.ingredientsName.includes(v))
-			&& selectedUstensils.every(v => recipe.ustensils.includes(v))
-			&& selectedAppliance.every(v => recipe.appliance.includes(v))) {
-			resultRecipes.push(recipe);
-		}
-	})
-
+	if (resultRecipes.length == 0){
+		recipes.forEach(recipe => {
+			if (selectedIngredient.every(v => recipe.ingredientsName.includes(v))
+				&& selectedUstensils.every(v => recipe.ustensils.includes(v))
+				&& selectedAppliance.every(v => recipe.appliance.includes(v))) {
+				resultRecipes.push(recipe);
+			}
+		})
+	}
+	
 	if (searchValue.length >= 3){
 		resultRecipes = resultRecipes.filter(
 			element => (element.name.includes(searchValue) || element.description.includes(searchValue))
