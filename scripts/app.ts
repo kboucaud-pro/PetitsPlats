@@ -254,6 +254,10 @@ async function displayRecipes(recipes: Recipe[]) {
 
 	recipesArea.innerHTML = '';
 
+	if (recipes.length == 0){
+		recipesArea.innerHTML += `<span class='recipe-not-found'>Aucune recette ne correspond aux filtres / recherche demandés</span>`;
+	}
+
 	if (recipesArea !== null) {
 		recipes.forEach(recipe => {
 			recipesArea.innerHTML += recipe.getDOMCard();
@@ -265,7 +269,6 @@ async function init() {
 	parseRecipes(recipesFile);
 	displayRecipes(recipes);
 	createFiltersTriggers();
-
 }
 
 let recipes: Array<Recipe> = [];

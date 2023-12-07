@@ -306,6 +306,9 @@ function displayRecipes(recipes) {
         return __generator(this, function (_a) {
             recipesArea = document.querySelector('.recipes-cards');
             recipesArea.innerHTML = '';
+            if (recipes.length == 0) {
+                recipesArea.innerHTML += "<span class='recipe-not-found'>Aucune recette ne correspond aux filtres / recherche demand\u00E9s</span>";
+            }
             if (recipesArea !== null) {
                 recipes.forEach(function (recipe) {
                     recipesArea.innerHTML += recipe.getDOMCard();

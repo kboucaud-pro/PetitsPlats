@@ -2068,6 +2068,9 @@
   async function displayRecipes(recipes2) {
     let recipesArea = document.querySelector(".recipes-cards");
     recipesArea.innerHTML = "";
+    if (recipes2.length == 0) {
+      recipesArea.innerHTML += `<span class='recipe-not-found'>Aucune recette ne correspond aux filtres / recherche demand\xE9s</span>`;
+    }
     if (recipesArea !== null) {
       recipes2.forEach((recipe) => {
         recipesArea.innerHTML += recipe.getDOMCard();
