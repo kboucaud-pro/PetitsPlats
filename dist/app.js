@@ -2028,11 +2028,19 @@
   async function createFiltersTriggers() {
     const filterCategories = document.querySelectorAll(".filter-title");
     const ingredientSearchBar = document.querySelector("#search-ingredient");
+    const applianceSearchBar = document.querySelector("#search-appliance");
+    const ustensilSearchBar = document.querySelector("#search-ustensil");
     filterCategories.forEach((element) => {
       element.addEventListener("click", switchViewCategoryElement);
     });
     ingredientSearchBar?.addEventListener("input", (field) => {
       createFilterOptionIngredient(field.target.value);
+    });
+    applianceSearchBar?.addEventListener("input", (field) => {
+      createFilterOptionAppliance(field.target.value);
+    });
+    ustensilSearchBar?.addEventListener("input", (field) => {
+      createFilterOptionUstensil(field.target.value);
     });
     createFilterOptionIngredient();
     createFilterOptionAppliance();
@@ -2087,6 +2095,13 @@
   }
   async function displayRecipes(recipes2) {
     let recipesArea = document.querySelector(".recipes-cards");
+<<<<<<< HEAD
+=======
+    recipesArea.innerHTML = "";
+    if (recipes2.length == 0) {
+      recipesArea.innerHTML += `<span class='recipe-not-found'>Aucune recette ne correspond aux filtres / recherche demand\xE9s</span>`;
+    }
+>>>>>>> master
     if (recipesArea !== null) {
       recipesArea.innerHTML = "";
       recipes2.forEach((recipe) => {

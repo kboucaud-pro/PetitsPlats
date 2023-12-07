@@ -204,6 +204,8 @@ async function createFilterOptionUstensil(search?: string) {
 async function createFiltersTriggers() {
 	const filterCategories = document.querySelectorAll('.filter-title');
 	const ingredientSearchBar = document.querySelector('#search-ingredient');
+	const applianceSearchBar = document.querySelector('#search-appliance');
+	const ustensilSearchBar = document.querySelector('#search-ustensil');
 
 	filterCategories.forEach(element => {
 		element.addEventListener('click', switchViewCategoryElement);
@@ -211,6 +213,14 @@ async function createFiltersTriggers() {
 
 	ingredientSearchBar?.addEventListener('input', (field) => {
 		createFilterOptionIngredient(field.target.value);
+	});
+
+	applianceSearchBar?.addEventListener('input', (field) => {
+		createFilterOptionAppliance(field.target.value);
+	});
+
+	ustensilSearchBar?.addEventListener('input', (field) => {
+		createFilterOptionUstensil(field.target.value);
 	});
 
 	createFilterOptionIngredient();
@@ -277,6 +287,12 @@ async function parseRecipes(recipesFile: Array<any>) {
 async function displayRecipes(recipes: Recipe[]) {
 	let recipesArea = document.querySelector('.recipes-cards');
 
+	recipesArea.innerHTML = '';
+
+	if (recipes.length == 0){
+		recipesArea.innerHTML += `<span class='recipe-not-found'>Aucune recette ne correspond aux filtres / recherche demandés</span>`;
+	}
+
 	if (recipesArea !== null) {
 		recipesArea.innerHTML = '';
 		recipes.forEach(recipe => {
@@ -289,11 +305,6 @@ async function init() {
 	parseRecipes(recipesFile);
 	displayRecipes(recipes);
 	createFiltersTriggers();
-
-
-	const researchField = document.querySelector('#search-bar');
-
-	researchField?.addEventListener('input', updateResearch);
 }
 
 let recipes: Array<Recipe> = [];

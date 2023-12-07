@@ -250,15 +250,23 @@ function createFilterOptionUstensil(search) {
 }
 function createFiltersTriggers() {
     return __awaiter(this, void 0, void 0, function () {
-        var filterCategories, ingredientSearchBar;
+        var filterCategories, ingredientSearchBar, applianceSearchBar, ustensilSearchBar;
         return __generator(this, function (_a) {
             filterCategories = document.querySelectorAll('.filter-title');
             ingredientSearchBar = document.querySelector('#search-ingredient');
+            applianceSearchBar = document.querySelector('#search-appliance');
+            ustensilSearchBar = document.querySelector('#search-ustensil');
             filterCategories.forEach(function (element) {
                 element.addEventListener('click', switchViewCategoryElement);
             });
             ingredientSearchBar === null || ingredientSearchBar === void 0 ? void 0 : ingredientSearchBar.addEventListener('input', function (field) {
                 createFilterOptionIngredient(field.target.value);
+            });
+            applianceSearchBar === null || applianceSearchBar === void 0 ? void 0 : applianceSearchBar.addEventListener('input', function (field) {
+                createFilterOptionAppliance(field.target.value);
+            });
+            ustensilSearchBar === null || ustensilSearchBar === void 0 ? void 0 : ustensilSearchBar.addEventListener('input', function (field) {
+                createFilterOptionUstensil(field.target.value);
             });
             createFilterOptionIngredient();
             createFilterOptionAppliance();
@@ -332,6 +340,13 @@ function displayRecipes(recipes) {
         var recipesArea;
         return __generator(this, function (_a) {
             recipesArea = document.querySelector('.recipes-cards');
+<<<<<<< HEAD
+=======
+            recipesArea.innerHTML = '';
+            if (recipes.length == 0) {
+                recipesArea.innerHTML += "<span class='recipe-not-found'>Aucune recette ne correspond aux filtres / recherche demand\u00E9s</span>";
+            }
+>>>>>>> master
             if (recipesArea !== null) {
                 recipesArea.innerHTML = '';
                 recipes.forEach(function (recipe) {
