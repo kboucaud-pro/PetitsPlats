@@ -69,6 +69,7 @@ main .filters .filter-menu {
   flex-direction: column;
   background-color: #ffffff;
   border-radius: 11px;
+  margin-right: 5%;
   width: 200px;
   position: relative;
 }
@@ -97,14 +98,14 @@ main .filters .showed-element-list {
   border-bottom-right-radius: 11px;
   top: 45px;
 }
-main .filters .showed-element-list #search-ingredient {
+main .filters .showed-element-list .filter-searchbar {
   width: 80%;
   height: 35px;
   border-radius: 2px;
   margin-left: 8%;
   border: 1px solid var(--Light-Grey, #c6c6c6);
 }
-main .filters .showed-element-list #search-ingredient:focus {
+main .filters .showed-element-list .filter-searchbar:focus {
   outline: none;
 }
 main .filters .showed-element-list .filter-element {
@@ -134,7 +135,7 @@ main .filters .showed-element-list .selected-options {
   margin-top: 10px;
   margin-bottom: 10px;
 }
-main .filters .showed-element-list .filter-ingredient-list {
+main .filters .showed-element-list .filter-list {
   display: flex;
   flex-direction: column;
   height: 200px;

@@ -40,19 +40,54 @@ var recipes_1 = require("./data/recipes");
 var recipe_1 = require("./entity/recipe");
 function activateFilter(filter) {
     return __awaiter(this, void 0, void 0, function () {
-        var activeFilterArea, currentFilterArea, filterText, selectedOptionsDOM, currentFiltersDOM;
+        var activeFilterArea, currentFilterArea, filterText, filterType, selectedOptionsDOM, currentFiltersDOM;
         return __generator(this, function (_a) {
             activeFilterArea = filter.target.parentElement.previousElementSibling;
             currentFilterArea = document.querySelector('.current-filters');
             filterText = filter.target.innerHTML;
+            filterType = '';
+            if (filter.target.parentNode.classList.contains('filter-ingredient-list')) {
+                filterType = 'ingredient';
+            }
+            else if (filter.target.parentNode.classList.contains('filter-appliance-list')) {
+                filterType = 'appliance';
+            }
+            else if (filter.target.parentNode.classList.contains('filter-ustensil-list')) {
+                filterType = 'ustensil';
+            }
             //Do a ifselse for each filter
-            selectedFilterIngredient.push(filterText);
-            selectedFilterIngredient = selectedFilterIngredient.sort();
+            if (filterType == 'ingredient') {
+                selectedIngredient.push(filterText);
+            }
+            else if (filterType == 'appliance') {
+                selectedAppliance.push(filterText);
+            }
+            else if (filterType == 'ustensil') {
+                selectedUstensils.push(filterText);
+            }
+            selectedIngredient = selectedIngredient.sort();
+            selectedAppliance = selectedAppliance.sort();
+            selectedUstensils = selectedUstensils.sort();
             activeFilterArea.innerHTML = '';
             currentFilterArea.innerHTML = '';
-            selectedFilterIngredient.forEach(function (element) {
-                activeFilterArea.innerHTML += "<span class='filter-element-selected'>" + element + "<span class=\"fa-solid fa-circle-xmark quit-selected-choice\"></span></span>";
-                currentFilterArea.innerHTML += "<span class='current-filter-selected'>" + element + "<span class=\"fa-solid fa-xmark\"></span></span>";
+            //A améliorer (function a part vraiment utile ?)
+            selectedIngredient.forEach(function (element) {
+                if (filterType == 'ingredient') {
+                    activeFilterArea.innerHTML += "<span class='filter-element-selected'>" + element + "<span class=\"fa-solid fa-circle-xmark quit-selected-choice\"></span></span>";
+                }
+                currentFilterArea.innerHTML += "<span class='current-filter-selected current-ingredient-selected'>" + element + "<span class=\"fa-solid fa-xmark\"></span></span>";
+            });
+            selectedAppliance.forEach(function (element) {
+                if (filterType == 'appliance') {
+                    activeFilterArea.innerHTML += "<span class='filter-element-selected'>" + element + "<span class=\"fa-solid fa-circle-xmark quit-selected-choice\"></span></span>";
+                }
+                currentFilterArea.innerHTML += "<span class='current-filter-selected current-appliance-selected'>" + element + "<span class=\"fa-solid fa-xmark\"></span></span>";
+            });
+            selectedUstensils.forEach(function (element) {
+                if (filterType == 'ustensil') {
+                    activeFilterArea.innerHTML += "<span class='filter-element-selected'>" + element + "<span class=\"fa-solid fa-circle-xmark quit-selected-choice\"></span></span>";
+                }
+                currentFilterArea.innerHTML += "<span class='current-filter-selected current-ustensil-selected'>" + element + "<span class=\"fa-solid fa-xmark\"></span></span>";
             });
             selectedOptionsDOM = document.querySelectorAll('.filter-element-selected');
             currentFiltersDOM = document.querySelectorAll('.current-filter-selected');
@@ -66,13 +101,24 @@ function activateFilter(filter) {
 }
 function disableFilter(filter) {
     return __awaiter(this, void 0, void 0, function () {
-        var currentFilters, filterText;
+        var currentFilters, filterText, parent;
         return __generator(this, function (_a) {
             currentFilters = document.querySelectorAll('.current-filter-selected');
             filterText = filter.target.innerText;
+            parent = filter.target.parentNode;
             currentFilters.forEach(function (element) { element.innerText == filterText ? element.remove() : 0; });
-            selectedFilterIngredient.splice(selectedFilterIngredient.indexOf(filterText), 1);
+            if (parent.classList.contains('selected-ingredient-options')) {
+                selectedIngredient.splice(selectedIngredient.indexOf(filterText), 1);
+            }
+            else if (parent.classList.contains('selected-appliance-options')) {
+                selectedAppliance.splice(selectedAppliance.indexOf(filterText), 1);
+            }
+            else if (parent.classList.contains('selected-ustensil-options')) {
+                selectedUstensils.splice(selectedUstensils.indexOf(filterText), 1);
+            }
             createFilterOptionIngredient();
+            createFilterOptionAppliance();
+            createFilterOptionUstensil();
             filter.target.remove();
             applyFilters();
             return [2 /*return*/];
@@ -90,8 +136,18 @@ function disableCurrentFilter(DOMelement) {
             selectedOptions = document.querySelectorAll('.filter-element-selected');
             filterText = currentFilter.innerText;
             selectedOptions.forEach(function (element) { element.innerText == filterText ? element.remove() : 0; });
-            selectedFilterIngredient.splice(selectedFilterIngredient.indexOf(filterText), 1);
+            if (currentFilter.classList.contains('current-ingredient-selected')) {
+                selectedIngredient.splice(selectedIngredient.indexOf(filterText), 1);
+            }
+            else if (currentFilter.classList.contains('current-appliance-selected')) {
+                selectedAppliance.splice(selectedAppliance.indexOf(filterText), 1);
+            }
+            else if (currentFilter.classList.contains('current-ustensil-selected')) {
+                selectedUstensils.splice(selectedUstensils.indexOf(filterText), 1);
+            }
             createFilterOptionIngredient();
+            createFilterOptionAppliance();
+            createFilterOptionUstensil();
             currentFilter.remove();
             applyFilters();
             return [2 /*return*/];
@@ -103,7 +159,9 @@ function applyFilters() {
         return __generator(this, function (_a) {
             resultRecipes = [];
             recipes.forEach(function (recipe) {
-                if (selectedFilterIngredient.every(function (v) { return recipe.ingredientsName.includes(v); })) {
+                if (selectedIngredient.every(function (v) { return recipe.ingredientsName.includes(v); })
+                    && selectedUstensils.every(function (v) { return recipe.ustensils.includes(v); })
+                    && selectedAppliance.every(function (v) { return recipe.appliance.includes(v); })) {
                     resultRecipes.push(recipe);
                 }
             });
@@ -119,12 +177,46 @@ function createFilterOptionIngredient(search) {
             ingredientOptions = document.querySelector('.filter-ingredient-list');
             ingredientOptions.innerHTML = '';
             ingredientsList.forEach(function (ingredientElement) {
-                if (!selectedFilterIngredient.includes(ingredientElement) && (search == undefined || search == '' || ingredientElement.includes(search))) {
+                if (!selectedIngredient.includes(ingredientElement) && (search == undefined || search == '' || ingredientElement.includes(search))) {
                     ingredientOptions.innerHTML += "<span class='filter-element'>" + ingredientElement + "</span>";
                 }
             });
             ingredientsOptionsDOM = document.querySelectorAll('.filter-element');
             ingredientsOptionsDOM.forEach(function (element) { element.addEventListener('click', activateFilter); });
+            return [2 /*return*/];
+        });
+    });
+}
+function createFilterOptionAppliance(search) {
+    return __awaiter(this, void 0, void 0, function () {
+        var applianceOptions, appliancesOptionsDOM;
+        return __generator(this, function (_a) {
+            applianceOptions = document.querySelector('.filter-appliance-list');
+            applianceOptions.innerHTML = '';
+            applianceList.forEach(function (applianceElement) {
+                if (!selectedAppliance.includes(applianceElement) && (search == undefined || search == '' || applianceElement.includes(search))) {
+                    applianceOptions.innerHTML += "<span class='filter-element'>" + applianceElement + "</span>";
+                }
+            });
+            appliancesOptionsDOM = document.querySelectorAll('.filter-element');
+            appliancesOptionsDOM.forEach(function (element) { element.addEventListener('click', activateFilter); });
+            return [2 /*return*/];
+        });
+    });
+}
+function createFilterOptionUstensil(search) {
+    return __awaiter(this, void 0, void 0, function () {
+        var ustensilOptions, ustensilsOptionsDOM;
+        return __generator(this, function (_a) {
+            ustensilOptions = document.querySelector('.filter-ustensil-list');
+            ustensilOptions.innerHTML = '';
+            ustensilsList.forEach(function (ustensilElement) {
+                if (!selectedUstensils.includes(ustensilElement) && (search == undefined || search == '' || ustensilElement.includes(search))) {
+                    ustensilOptions.innerHTML += "<span class='filter-element'>" + ustensilElement + "</span>";
+                }
+            });
+            ustensilsOptionsDOM = document.querySelectorAll('.filter-element');
+            ustensilsOptionsDOM.forEach(function (element) { element.addEventListener('click', activateFilter); });
             return [2 /*return*/];
         });
     });
@@ -142,6 +234,8 @@ function createFiltersTriggers() {
                 createFilterOptionIngredient(field.target.value);
             });
             createFilterOptionIngredient();
+            createFilterOptionAppliance();
+            createFilterOptionUstensil();
             return [2 /*return*/];
         });
     });
@@ -152,6 +246,18 @@ function addToIngredientList(ingredients) {
             ingredients.forEach(function (ingredient) {
                 if (!ingredientsList.includes(ingredient.ingredient)) {
                     ingredientsList.push(ingredient.ingredient);
+                }
+            });
+            return [2 /*return*/];
+        });
+    });
+}
+function addToUstensilsList(ustensils) {
+    return __awaiter(this, void 0, void 0, function () {
+        return __generator(this, function (_a) {
+            ustensils.forEach(function (ustensil) {
+                if (!ustensilsList.includes(ustensil)) {
+                    ustensilsList.push(ustensil);
                 }
             });
             return [2 /*return*/];
@@ -185,6 +291,10 @@ function parseRecipes(recipesFile) {
             recipesFile.forEach(function (element) {
                 recipes.push(new recipe_1.Recipe(element.id, element.name, element.image, element.servings, element.time, element.description, element.appliance, element.ustensils, element.ingredients));
                 addToIngredientList(recipes[recipes.length - 1].ingredients);
+                addToUstensilsList(recipes[recipes.length - 1].ustensils);
+                if (!applianceList.includes(element.appliance)) {
+                    applianceList.push(element.appliance);
+                }
             });
             return [2 /*return*/];
         });
@@ -218,5 +328,9 @@ function init() {
 var recipes = [];
 var resultRecipes = [];
 var ingredientsList = [];
-var selectedFilterIngredient = [];
+var applianceList = [];
+var ustensilsList = [];
+var selectedIngredient = [];
+var selectedAppliance = [];
+var selectedUstensils = [];
 init();
