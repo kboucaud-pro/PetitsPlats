@@ -168,7 +168,7 @@ function applyFilters() {
         return __generator(this, function (_a) {
             resultRecipes = [];
             //if no filter enable, we search on source array
-            if (selectedFilterIngredient.length == 0) {
+            if (selectedIngredient.length == 0 && selectedAppliance.length == 0 && selectedUstensils.length == 0) {
                 resultRecipes = recipes;
             }
             recipes.forEach(function (recipe) {
