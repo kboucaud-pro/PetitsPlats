@@ -340,13 +340,10 @@ function displayRecipes(recipes) {
         var recipesArea;
         return __generator(this, function (_a) {
             recipesArea = document.querySelector('.recipes-cards');
-<<<<<<< HEAD
-=======
             recipesArea.innerHTML = '';
             if (recipes.length == 0) {
                 recipesArea.innerHTML += "<span class='recipe-not-found'>Aucune recette ne correspond aux filtres / recherche demand\u00E9s</span>";
             }
->>>>>>> master
             if (recipesArea !== null) {
                 recipesArea.innerHTML = '';
                 recipes.forEach(function (recipe) {
