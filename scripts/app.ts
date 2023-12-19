@@ -300,6 +300,11 @@ async function init() {
 	parseRecipes(recipesFile);
 	displayRecipes(recipes);
 	createFiltersTriggers();
+
+
+	const researchField = document.querySelector('#search-bar');
+
+	researchField?.addEventListener('input', updateResearch);
 }
 
 let recipes: Array<Recipe> = [];
