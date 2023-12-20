@@ -1967,11 +1967,7 @@
       resultRecipes = recipes;
     }
     if (resultRecipes.length == 0) {
-      recipes.forEach((recipe) => {
-        if (selectedIngredient.every((v) => recipe.ingredientsName.includes(v)) && selectedUstensils.every((v) => recipe.ustensils.includes(v)) && selectedAppliance.every((v) => recipe.appliance.includes(v))) {
-          resultRecipes.push(recipe);
-        }
-      });
+      resultRecipes = recipes.filter((recipe) => selectedIngredient.every((v) => recipe.ingredientsName.includes(v)) && selectedUstensils.every((v) => recipe.ustensils.includes(v)) && selectedAppliance.every((v) => recipe.appliance.includes(v)));
     }
     if (searchValue.length >= 3) {
       resultRecipes = resultRecipes.filter(

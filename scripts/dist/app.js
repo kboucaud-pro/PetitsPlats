@@ -172,13 +172,9 @@ function applyFilters() {
                 resultRecipes = recipes;
             }
             if (resultRecipes.length == 0) {
-                recipes.forEach(function (recipe) {
-                    if (selectedIngredient.every(function (v) { return recipe.ingredientsName.includes(v); })
-                        && selectedUstensils.every(function (v) { return recipe.ustensils.includes(v); })
-                        && selectedAppliance.every(function (v) { return recipe.appliance.includes(v); })) {
-                        resultRecipes.push(recipe);
-                    }
-                });
+                resultRecipes = recipes.filter(function (recipe) { return (selectedIngredient.every(function (v) { return recipe.ingredientsName.includes(v); })
+                    && selectedUstensils.every(function (v) { return recipe.ustensils.includes(v); })
+                    && selectedAppliance.every(function (v) { return recipe.appliance.includes(v); })); });
             }
             if (searchValue.length >= 3) {
                 resultRecipes = resultRecipes.filter(function (element) { return (element.name.includes(searchValue) || element.description.includes(searchValue)); });

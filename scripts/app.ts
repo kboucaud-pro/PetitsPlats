@@ -132,13 +132,10 @@ async function applyFilters() {
 	}
 
 	if (resultRecipes.length == 0){
-		recipes.forEach(recipe => {
-			if (selectedIngredient.every(v => recipe.ingredientsName.includes(v))
+		resultRecipes = recipes.filter(recipe => (
+				selectedIngredient.every(v => recipe.ingredientsName.includes(v))
 				&& selectedUstensils.every(v => recipe.ustensils.includes(v))
-				&& selectedAppliance.every(v => recipe.appliance.includes(v))) {
-				resultRecipes.push(recipe);
-			}
-		})
+				&& selectedAppliance.every(v => recipe.appliance.includes(v))))
 	}
 	
 	if (searchValue.length >= 3){
