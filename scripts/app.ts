@@ -69,6 +69,12 @@ async function activateFilter(filter) {
 	filter.target.remove();
 
 	applyFilters();
+
+	actualizeFilterList();
+
+	createFilterOptionIngredient();
+	createFilterOptionAppliance();
+	createFilterOptionUstensil();
 }
 
 async function disableFilter(filter) {
@@ -87,13 +93,15 @@ async function disableFilter(filter) {
 		selectedUstensils.splice(selectedUstensils.indexOf(filterText), 1);
 	}
 
-	createFilterOptionIngredient();
-	createFilterOptionAppliance();
-	createFilterOptionUstensil();
-
 	filter.target.remove();
 
 	applyFilters();
+
+	actualizeFilterList();
+
+	createFilterOptionIngredient();
+	createFilterOptionAppliance();
+	createFilterOptionUstensil();
 }
 
 /**
@@ -115,13 +123,15 @@ async function disableCurrentFilter(DOMelement) {
 		selectedUstensils.splice(selectedUstensils.indexOf(filterText), 1);
 	}
 
-	createFilterOptionIngredient();
-	createFilterOptionAppliance();
-	createFilterOptionUstensil();
-
 	currentFilter.remove();
 
 	applyFilters();
+
+	actualizeFilterList();
+
+	createFilterOptionIngredient();
+	createFilterOptionAppliance();
+	createFilterOptionUstensil();
 }
 
 async function applyFilters() {
@@ -154,6 +164,21 @@ async function applyFilters() {
 	}
 
 	displayRecipes(conformRecipes);
+}
+
+async function actualizeFilterList() {
+
+	ingredientsList = [];
+	applianceList = [];
+	ustensilsList = [];
+
+	resultRecipes.forEach(recipe => {
+		addToIngredientList(recipe.ingredients);
+		addToUstensilsList(recipe.ustensils);
+		if (!applianceList.includes(recipe.appliance)) {
+			applianceList.push(recipe.appliance);
+		}
+	})
 }
 
 async function createFilterOptionIngredient(search?: string) {
@@ -223,6 +248,8 @@ async function createFiltersTriggers() {
 		createFilterOptionUstensil(field.target.value);
 	});
 
+	actualizeFilterList();
+
 	createFilterOptionIngredient();
 	createFilterOptionAppliance();
 	createFilterOptionUstensil();
@@ -275,13 +302,9 @@ async function parseRecipes(recipesFile: Array<any>) {
 			element.ustensils,
 			element.ingredients
 		));
-
-		addToIngredientList(recipes[recipes.length - 1].ingredients);
-		addToUstensilsList(recipes[recipes.length - 1].ustensils);
-		if (!applianceList.includes(element.appliance)) {
-			applianceList.push(element.appliance);
-		}
 	});
+
+	resultRecipes = recipes;
 }
 
 async function displayRecipes(recipes: Recipe[]) {
@@ -289,7 +312,7 @@ async function displayRecipes(recipes: Recipe[]) {
 
 	recipesArea.innerHTML = '';
 
-	if (recipes.length == 0){
+	if (recipes.length == 0) {
 		recipesArea.innerHTML += `<span class='recipe-not-found'>Aucune recette ne correspond aux filtres / recherche demandés</span>`;
 	}
 

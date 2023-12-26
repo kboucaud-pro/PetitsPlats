@@ -105,6 +105,10 @@ function activateFilter(filter) {
             currentFiltersDOM.forEach(function (element) { element.addEventListener('click', disableCurrentFilter); });
             filter.target.remove();
             applyFilters();
+            actualizeFilterList();
+            createFilterOptionIngredient();
+            createFilterOptionAppliance();
+            createFilterOptionUstensil();
             return [2 /*return*/];
         });
     });
@@ -126,11 +130,12 @@ function disableFilter(filter) {
             else if (parent.classList.contains('selected-ustensil-options')) {
                 selectedUstensils.splice(selectedUstensils.indexOf(filterText), 1);
             }
+            filter.target.remove();
+            applyFilters();
+            actualizeFilterList();
             createFilterOptionIngredient();
             createFilterOptionAppliance();
             createFilterOptionUstensil();
-            filter.target.remove();
-            applyFilters();
             return [2 /*return*/];
         });
     });
@@ -155,11 +160,12 @@ function disableCurrentFilter(DOMelement) {
             else if (currentFilter.classList.contains('current-ustensil-selected')) {
                 selectedUstensils.splice(selectedUstensils.indexOf(filterText), 1);
             }
+            currentFilter.remove();
+            applyFilters();
+            actualizeFilterList();
             createFilterOptionIngredient();
             createFilterOptionAppliance();
             createFilterOptionUstensil();
-            currentFilter.remove();
-            applyFilters();
             return [2 /*return*/];
         });
     });
@@ -193,6 +199,23 @@ function applyFilters() {
                 conformRecipes = resultRecipes;
             }
             displayRecipes(conformRecipes);
+            return [2 /*return*/];
+        });
+    });
+}
+function actualizeFilterList() {
+    return __awaiter(this, void 0, void 0, function () {
+        return __generator(this, function (_a) {
+            ingredientsList = [];
+            applianceList = [];
+            ustensilsList = [];
+            resultRecipes.forEach(function (recipe) {
+                addToIngredientList(recipe.ingredients);
+                addToUstensilsList(recipe.ustensils);
+                if (!applianceList.includes(recipe.appliance)) {
+                    applianceList.push(recipe.appliance);
+                }
+            });
             return [2 /*return*/];
         });
     });
@@ -268,6 +291,7 @@ function createFiltersTriggers() {
             ustensilSearchBar === null || ustensilSearchBar === void 0 ? void 0 : ustensilSearchBar.addEventListener('input', function (field) {
                 createFilterOptionUstensil(field.target.value);
             });
+            actualizeFilterList();
             createFilterOptionIngredient();
             createFilterOptionAppliance();
             createFilterOptionUstensil();
@@ -325,12 +349,8 @@ function parseRecipes(recipesFile) {
         return __generator(this, function (_a) {
             recipesFile.forEach(function (element) {
                 recipes.push(new recipe_1.Recipe(element.id, element.name, element.image, element.servings, element.time, element.description, element.appliance, element.ustensils, element.ingredients));
-                addToIngredientList(recipes[recipes.length - 1].ingredients);
-                addToUstensilsList(recipes[recipes.length - 1].ustensils);
-                if (!applianceList.includes(element.appliance)) {
-                    applianceList.push(element.appliance);
-                }
             });
+            resultRecipes = recipes;
             return [2 /*return*/];
         });
     });

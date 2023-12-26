@@ -1921,6 +1921,10 @@
     });
     filter.target.remove();
     applyFilters();
+    actualizeFilterList();
+    createFilterOptionIngredient();
+    createFilterOptionAppliance();
+    createFilterOptionUstensil();
   }
   async function disableFilter(filter) {
     let currentFilters = document.querySelectorAll(".current-filter-selected");
@@ -1936,11 +1940,12 @@
     } else if (parent.classList.contains("selected-ustensil-options")) {
       selectedUstensils.splice(selectedUstensils.indexOf(filterText), 1);
     }
+    filter.target.remove();
+    applyFilters();
+    actualizeFilterList();
     createFilterOptionIngredient();
     createFilterOptionAppliance();
     createFilterOptionUstensil();
-    filter.target.remove();
-    applyFilters();
   }
   async function disableCurrentFilter(DOMelement) {
     let currentFilter = DOMelement.target;
@@ -1956,11 +1961,12 @@
     } else if (currentFilter.classList.contains("current-ustensil-selected")) {
       selectedUstensils.splice(selectedUstensils.indexOf(filterText), 1);
     }
+    currentFilter.remove();
+    applyFilters();
+    actualizeFilterList();
     createFilterOptionIngredient();
     createFilterOptionAppliance();
     createFilterOptionUstensil();
-    currentFilter.remove();
-    applyFilters();
   }
   async function applyFilters() {
     resultRecipes = [];
@@ -1985,6 +1991,18 @@
       conformRecipes = resultRecipes;
     }
     displayRecipes(conformRecipes);
+  }
+  async function actualizeFilterList() {
+    ingredientsList = [];
+    applianceList = [];
+    ustensilsList = [];
+    resultRecipes.forEach((recipe) => {
+      addToIngredientList(recipe.ingredients);
+      addToUstensilsList(recipe.ustensils);
+      if (!applianceList.includes(recipe.appliance)) {
+        applianceList.push(recipe.appliance);
+      }
+    });
   }
   async function createFilterOptionIngredient(search) {
     const ingredientOptions = document.querySelector(".filter-ingredient-list");
@@ -2042,6 +2060,7 @@
     ustensilSearchBar?.addEventListener("input", (field) => {
       createFilterOptionUstensil(field.target.value);
     });
+    actualizeFilterList();
     createFilterOptionIngredient();
     createFilterOptionAppliance();
     createFilterOptionUstensil();
@@ -2086,12 +2105,8 @@
         element.ustensils,
         element.ingredients
       ));
-      addToIngredientList(recipes[recipes.length - 1].ingredients);
-      addToUstensilsList(recipes[recipes.length - 1].ustensils);
-      if (!applianceList.includes(element.appliance)) {
-        applianceList.push(element.appliance);
-      }
     });
+    resultRecipes = recipes;
   }
   async function displayRecipes(recipes2) {
     let recipesArea = document.querySelector(".recipes-cards");
