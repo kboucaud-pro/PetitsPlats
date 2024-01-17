@@ -150,7 +150,9 @@ async function applyFilters() {
 	
 	if (searchValue.length >= 3){
 		resultRecipes = resultRecipes.filter(
-			element => (element.name.includes(searchValue) || element.description.includes(searchValue))
+			element => (element.name.includes(searchValue) 
+			|| element.description.includes(searchValue)
+			|| element.ingredientsName.some(e => e.includes(searchValue)))
 		);
 	}
 
