@@ -3,6 +3,12 @@ import { recipesFile } from "./data/recipes";
 import { Ingredient } from "./entity/ingredient";
 import { Recipe } from "./entity/recipe";
 
+async function updateResearch(e: Event) {
+	searchValue = encodeURI(e.target.value);
+
+	applyFilters();
+}
+
 async function activateFilter(filter) {
 	let activeFilterArea = filter.target.parentElement.previousElementSibling;
 	let currentFilterArea = document.querySelector('.current-filters');
@@ -130,13 +136,23 @@ async function applyFilters() {
 
 	resultRecipes = [];
 
-	recipes.forEach(recipe => {
-		if (selectedIngredient.every(v => recipe.ingredientsName.includes(v))
-			&& selectedUstensils.every(v => recipe.ustensils.includes(v))
-			&& selectedAppliance.every(v => recipe.appliance.includes(v))) {
-			resultRecipes.push(recipe);
-		}
-	})
+	//if no filter enable, we search on source array
+	if (selectedIngredient.length == 0 && selectedAppliance.length == 0 && selectedUstensils.length == 0){
+		resultRecipes = recipes;
+	}
+
+	if (resultRecipes.length == 0){
+		resultRecipes = recipes.filter(recipe => (
+				selectedIngredient.every(v => recipe.ingredientsName.includes(v))
+				&& selectedUstensils.every(v => recipe.ustensils.includes(v))
+				&& selectedAppliance.every(v => recipe.appliance.includes(v))))
+	}
+	
+	if (searchValue.length >= 3){
+		resultRecipes = resultRecipes.filter(
+			element => (element.name.includes(searchValue) || element.description.includes(searchValue))
+		);
+	}
 
 	displayRecipes(resultRecipes);
 }
@@ -302,6 +318,11 @@ async function init() {
 	parseRecipes(recipesFile);
 	displayRecipes(recipes);
 	createFiltersTriggers();
+
+
+	const researchField = document.querySelector('#search-bar');
+
+	researchField?.addEventListener('input', updateResearch);
 }
 
 let recipes: Array<Recipe> = [];
@@ -312,5 +333,6 @@ let ustensilsList: Array<string> = [];
 let selectedIngredient: Array<string> = [];
 let selectedAppliance: Array<string> = [];
 let selectedUstensils: Array<string> = [];
+let searchValue = '';
 
 init();
